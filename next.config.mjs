@@ -5,7 +5,7 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "randomuser.me",
-        pathname: "/**",   // required
+        pathname: "/**",
       },
     ],
   },
@@ -16,4 +16,4 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+export default nextConfig;
