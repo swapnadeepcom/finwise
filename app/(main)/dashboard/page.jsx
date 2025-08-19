@@ -1,4 +1,7 @@
-// This is a Server Component now
+// app/(main)/dashboard/page.tsx (or page.jsx)
+
+// Force dynamic rendering (important for auth + DB queries)
+export const dynamic = "force-dynamic";
 
 import { getDashboardData, getUserAccounts } from "@/actions/dashboard";
 import CreateAccountDrawer from "@/components/create-account-drawer";
@@ -11,22 +14,15 @@ import DashboardOverview from "./_components/transaction-overview";
 
 async function DashboardPage() {
   try {
-    console.log("Fetching accounts...");
-    const accounts = (await getUserAccounts()) || [];   // ✅ safe default
-    console.log("Accounts loaded:", accounts);
-
+    const accounts = (await getUserAccounts()) || [];
     const defaultAccount = accounts.find((account) => account.isDefault);
-    let budgetData = null;
 
+    let budgetData = null;
     if (defaultAccount) {
-      console.log("Fetching budget...");
       budgetData = await getCurrentBudget(defaultAccount.id);
-      console.log("Budget data:", budgetData);
     }
 
-    console.log("Fetching transactions...");
     const transactions = (await getDashboardData()) || [];
-    console.log("Transactions:", transactions);
 
     return (
       <div className="space-y-8">
@@ -49,7 +45,6 @@ async function DashboardPage() {
             </Card>
           </CreateAccountDrawer>
 
-          {/* SAFER MAPPING */}
           {Array.isArray(accounts) &&
             accounts.map((account) => (
               <AccountCard key={account.id} account={account} />
